@@ -1,6 +1,6 @@
 <script lang="ts">
   import {Card} from 'svelte-chota';
-  import {onMount} from 'svelte'
+  import {onMount, onDestroy} from 'svelte'
   import Link from "../components/Link.svelte";
   import InputText from "../components/InputText.svelte";
   import Button from "../components/buttons/Button.svelte";
@@ -15,18 +15,21 @@
   let modalOpen = false;
   let editTargetTask = {} as Task;
 
+  const unsubscribe = tasksState.subscribe(value => {
+    tasks = value;
+  });
+
   // useEffect(() => { ... }, [])
   onMount(() => {
     return () => {
       console.log("un mounted");
       localStorage.setItem("tasks", JSON.stringify(tasks));
     }
-  })
+  });
+  onDestroy(() => {
+    unsubscribe();
+  });
 
-  tasksState.subscribe(value => {
-    tasks = value;
-  })
-  
   const onClickAddTask = (e) => {
     e.preventDefault();
     addTask({title, content});
@@ -40,11 +43,8 @@
   }
 
   const onClickEdit = (id: string) => {
-    console.log("click")
     const found = tasks.find(item => item.id === id)
-    console.log(found)
     if(found){
-      console.log("will open")
       editTargetTask = found
       modalOpen = true;
     }

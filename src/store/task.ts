@@ -8,7 +8,8 @@ export type Task = {
 }
 
 const json = localStorage.getItem("tasks");
-const data = json ? JSON.parse(json) : []
+const data = json ? JSON.parse(json) : [];
+
 export const tasksState = writable<Task[]>(data);
 
 export const addTask = (task: Omit<Task, "id">) => {

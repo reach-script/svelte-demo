@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Route from './Router/route.svelte';
+  import Router from './router/Router.svelte';
   import 'chota';
 </script>
 
 <main>
-  <Route />
+  <Router />
 </main>
 
 <style>
